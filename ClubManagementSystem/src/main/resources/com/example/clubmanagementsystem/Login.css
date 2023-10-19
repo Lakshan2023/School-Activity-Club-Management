@@ -1,3 +1,4 @@
 #LoginPane{
-    -fx-background-color: green;
+    -fx-background-color: white;
+    -fx-background-radius: 10px;
 }

@@ -6,4 +6,6 @@ module com.example.clubmanagementsystem {
 
     opens com.example.clubmanagementsystem to javafx.fxml;
     exports com.example.clubmanagementsystem;
+    opens Login to javafx.fxml;
+    exports Login;
 }
