@@ -26,8 +26,11 @@
 }
 
 .loginButtons:pressed{
-      -fx-font-size: 27px;
+      -fx-font-size: 22px;
 }
+
+
+
 
 
 
