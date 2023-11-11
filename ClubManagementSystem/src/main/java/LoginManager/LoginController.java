@@ -1,5 +1,6 @@
 package LoginManager;
 
+import com.example.clubmanagementsystem.ApplicationController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -7,6 +8,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
@@ -16,6 +18,7 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -38,6 +41,7 @@ public class LoginController implements Initializable {
 
     @FXML
     private Circle studentCircle;
+
 
     @FXML
     void LoginDragDetected(MouseEvent event) {
@@ -74,17 +78,22 @@ public class LoginController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        String filePath = new File("").getAbsolutePath();
-        String clubAdvisorImagePath = filePath + "/src/main/resources/Images/lecturer.jpeg";
-        String studentImagePath = filePath + "/src/main/resources/Images/student.jpeg";
-
-        Image imgClubAdvisor = new Image(clubAdvisorImagePath);
-        clubAdvisorCircle.setFill(new ImagePattern(imgClubAdvisor));
-
-        Image imgStudent = new Image(studentImagePath);
-        studentCircle.setFill(new ImagePattern(imgStudent));
 
     }
+
+    @FXML
+    void ClosePane(ActionEvent event) {
+        ApplicationController applicationController = new ApplicationController();
+        applicationController.closingApp();
+    }
+
+    @FXML
+    void MinimizePane(ActionEvent event) {
+        ApplicationController applicationController = new ApplicationController();
+        applicationController.MinimizeApp(LoginPane);
+    }
+
+
 
 }
 
