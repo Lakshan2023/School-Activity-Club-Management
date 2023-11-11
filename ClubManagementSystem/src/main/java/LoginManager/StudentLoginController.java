@@ -15,6 +15,11 @@ import java.io.IOException;
 
 
 public class StudentLoginController {
+    static boolean loginStatus;
+
+    String studentLoginPageUserName;
+    String studentLoginPagePassword;
+
     private Scene scene;
     private Stage stage;
 
@@ -49,13 +54,23 @@ public class StudentLoginController {
     private TextField studentContactNumber;
 
     @FXML
+    private TextField studentLoginUserName;
+
+    @FXML
+    private TextField studentLoginPassword  ;
+
+    @FXML
     private ComboBox<?> studentGrade;
 
     @FXML
     private ComboBox<?> studentGender;
+    @FXML
+    private CheckBox studentLoginShowPassword;
 
     @FXML
-    public Label usernameLabel;
+    public Label studentLoginUserNameErrorLabel;
+    @FXML
+    public Label studentLoginPasswordErrorLabel;
 
     @FXML
     void DirectToStartPage(ActionEvent event) throws IOException {
@@ -91,8 +106,27 @@ public class StudentLoginController {
         applicationController.closingApp();
     }
 
+    boolean fieldsFilledChecker(){
+        loginStatus = true;
+        studentLoginPageUserName = studentLoginUserName.getText();
+        studentLoginPagePassword = studentLoginPassword.getText();
+        if(studentLoginPageUserName.isEmpty()){
+            loginStatus = false;
+            studentLoginUserNameErrorLabel.setText("This field cannot be empty");
+        }
+        if(studentLoginPagePassword.isEmpty()){
+            studentLoginPasswordErrorLabel.setText("This field cannot be empty");
+            loginStatus = false;
+        }
+        return loginStatus;
+
+    }
+
     @FXML
     void DirectToStudentDashboard(ActionEvent event) throws IOException {
+        if(!fieldsFilledChecker()){
+            return;
+        }
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/com/example/clubmanagementsystem/StudentDashboard.fxml"));
         Parent root = loader.load();
@@ -127,6 +161,4 @@ public class StudentLoginController {
     void StudentRegistrationChecker(ActionEvent event) {
 
     }
-
-
 }
