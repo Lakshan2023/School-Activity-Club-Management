@@ -1,14 +1,17 @@
 package SystemUsers;
 
+import SystemUserValidator.ClubAdvisorValidator;
 import com.example.clubmanagementsystem.HelloApplication;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
-public class ClubAdvisor extends User{
+public class ClubAdvisor extends User implements ClubAdvisorValidator {
     private int clubAdvisorId;
-    public static String advisorIdStatus;
+    public static ArrayList<ClubAdvisor> clubAdvisorDetailsList = new ArrayList<>();
+    public static String advisorIdStatus = "";
 
 
     public ClubAdvisor(String userName,String password,
@@ -20,6 +23,11 @@ public class ClubAdvisor extends User{
 
     public ClubAdvisor(String contactNumber){
         super(contactNumber);
+    }
+
+    @Override
+    public void registerToSystem() {
+
     }
 
     public ClubAdvisor(String userName,String password,
@@ -40,20 +48,11 @@ public class ClubAdvisor extends User{
         this.clubAdvisorId = clubAdvisorId;
     }
 
-    @Override
-    public boolean validateUserName(String requiredWork, String user) {
-        return super.validateUserName(requiredWork, user);
-    }
-
-    @Override
-    public boolean validatePassword(String requiredWork) {
-        return true;
-    }
-
     public void passwordChecker(){
 
     }
 
+    @Override
     public boolean validateClubAdvisorId() throws SQLException {
         if(String.valueOf(this.getClubAdvisorId()).isEmpty()){
             advisorIdStatus = "empty";
@@ -61,12 +60,11 @@ public class ClubAdvisor extends User{
             return false;
         }
 
-        if(String.valueOf(this.getClubAdvisorId()).length() > 6){
+        if(String.valueOf(this.getClubAdvisorId()).length() != 6){
             advisorIdStatus = "length";
             System.out.println("more than 6");
             return false;
         }
-
 
         String sql = "SELECT * FROM TeacherInCharge  WHERE teacherInChargeId = ?";
         PreparedStatement preparedStatement = HelloApplication.connection.prepareStatement(sql);
