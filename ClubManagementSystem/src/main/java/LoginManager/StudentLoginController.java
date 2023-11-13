@@ -1,6 +1,7 @@
 package LoginManager;
 
 import com.example.clubmanagementsystem.ApplicationController;
+import com.example.clubmanagementsystem.HelloApplication;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,10 +13,12 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import java.io.IOException;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 
 public class StudentLoginController {
-    static boolean loginStatus;
+    static boolean loginStatus; //
 
     String studentLoginPageUserName;
     String studentLoginPagePassword;
@@ -107,6 +110,12 @@ public class StudentLoginController {
     }
 
     boolean fieldsFilledChecker(){
+
+//        String sql = "SELECT * FROM TeacherInCharge  WHERE teacherInChargeId = ?";
+//        PreparedStatement preparedStatement = HelloApplication.connection.prepareStatement(sql);
+//        preparedStatement.setString(1, String.valueOf(this.getClubAdvisorId()));
+//        ResultSet results = preparedStatement.executeQuery();
+
         loginStatus = true;
         studentLoginPageUserName = studentLoginUserName.getText();
         studentLoginPagePassword = studentLoginPassword.getText();
@@ -119,7 +128,6 @@ public class StudentLoginController {
             loginStatus = false;
         }
         return loginStatus;
-
     }
 
     @FXML
@@ -162,3 +170,4 @@ public class StudentLoginController {
 
     }
 }
+

@@ -26,7 +26,6 @@ public class HelloApplication extends Application {
             E.printStackTrace();
         }
     }
-
     public static void main(String[] args) throws SQLException {
         String URL = "jdbc:mysql://localhost:3306/ClubManagementSystsem";
         String user = "root";
