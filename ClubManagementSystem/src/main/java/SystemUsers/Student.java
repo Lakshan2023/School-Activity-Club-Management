@@ -60,10 +60,7 @@ public class Student extends User implements StudentValidator {
                    String updatedContactNum, String updatedAdmissionNum) {
         super(updatedUserName,updatedFirstName,updatedLastName, updatedContactNum, updatedAdmissionNum);
     }
-    @Override
-    public String advisorLoginToSystem(){
-        return null;
-    }
+
 //    @Override
 //    public String advisorRegisteringToSystem(){
 //        return null;
@@ -71,7 +68,7 @@ public class Student extends User implements StudentValidator {
 
     //Created for inserting details into generate report membership table
     public Student(int memberAdmissionNum, String memberUserName, String memberFirstName, String memberLastName,int memberGrade,char memberGender, String memberContactNum) {
-        super(memberUserName,memberFirstName, memberLastName, memberContactNum);
+        super(memberUserName,null,memberFirstName, memberLastName, memberContactNum);
         this.studentAdmissionNum = memberAdmissionNum;
         this.studentGrade = memberGrade;
         this.setStudentGender(memberGender);
@@ -106,7 +103,7 @@ public class Student extends User implements StudentValidator {
     }
 
     @Override
-    public String studentLoginToSystem() { // this method will check whether entered password is correct
+    public String LoginToSystem() { // this method will check whether entered password is correct
         String correctPassword = null; // store correct password from database
         String credentialChdeckQuery = "select studentPassword from studentCredentials where studentUserName = ?"; // sql query
         try (PreparedStatement preparedStatement = HelloApplication.connection.prepareStatement(credentialChdeckQuery)) { // prepare the statement to execute the code
