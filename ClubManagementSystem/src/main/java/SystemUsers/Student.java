@@ -73,10 +73,11 @@ public class Student extends User implements StudentValidator {
         this.studentGrade = memberGrade;
         this.setStudentGender(memberGender);
     }
+
     @Override
     public void registerToSystem() {
-
     }
+
 
     public int getStudentAdmissionNum() {
         return studentAdmissionNum;

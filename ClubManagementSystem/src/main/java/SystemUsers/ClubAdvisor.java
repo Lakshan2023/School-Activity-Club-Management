@@ -76,6 +76,7 @@ public class ClubAdvisor extends User implements ClubAdvisorValidator {
     }
 
 
+
     public void createClub(int clubId, String clubName, String clubDescription, String imagePath, int clubAdvisorId){
         //Creating a new club object with the correct user given data
         Club clubData = new Club(clubId, clubName, clubDescription, imagePath);
