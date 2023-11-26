@@ -12,7 +12,6 @@ import ClubManager.EventManager;
 import com.example.clubmanagementsystem.HelloApplication;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -26,7 +25,6 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -74,14 +72,8 @@ public class ClubAdvisorActivityController extends ClubAdvisorDashboardControlll
     public static int clubIdSetterValue; // Static value for setting club IDs
     public LocalDate selectedUpcomingDate; // Represents the selected upcoming date
     public LocalDate selectedMostFutureDate;  // Represents the selected most future date
-    
-    @FXML
-    public TableView<Attendance> attendanceTrackerTable;
-
-
 
     // This method initializes all variables and call methods when loading club advisor dashboard
-
     @Override
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -149,6 +141,13 @@ public class ClubAdvisorActivityController extends ClubAdvisorDashboardControlll
         createClubTableDescription.setCellValueFactory(new PropertyValueFactory<>("clubDescription"));
         createClubTableLogo.setCellValueFactory(new PropertyValueFactory<>("absoluteImage"));
 
+        // the columns are initialized for the attendance tracking table
+        attendanceClubNameColumn.setCellValueFactory(new PropertyValueFactory<>("clubName"));
+        attendanceEventNameColumn.setCellValueFactory(new PropertyValueFactory<>("eventName"));
+        attendanceStudentNameColumn.setCellValueFactory(new PropertyValueFactory<>("studentName"));
+        attendanceStudentAdmissionNumColumn.setCellValueFactory(new PropertyValueFactory<>("studentAdmissionNum"));
+        attendanceStatusColumn.setCellValueFactory(new PropertyValueFactory<>("attendanceStatus"));
+
 //        Club club1 = new Club(0001, "Rotaract", "Done with the work", "lkt.img");
 //        clubDetailsList.add(club1);
 //        ObservableList<Club> observableClubDetailsList = FXCollections.observableArrayList();
@@ -175,7 +174,6 @@ public class ClubAdvisorActivityController extends ClubAdvisorDashboardControlll
         displayStudentUpdateDetails();
 
     }
-
 
     // this method populate the combo boxes with entity types  and its tables
     public void populateComboBoxes() {
@@ -425,7 +423,6 @@ public class ClubAdvisorActivityController extends ClubAdvisorDashboardControlll
             clubUpdateAlert.setHeaderText(clubName + " Club created successfully!");
             clubUpdateAlert.show();
 
-
             //Generating the next club id for next club and, displaying
             clubIdSetterValue += 1;
             this.clubId.setText(String.valueOf(clubIdSetterValue));
@@ -433,7 +430,6 @@ public class ClubAdvisorActivityController extends ClubAdvisorDashboardControlll
             //Resetting the club details text fields
             this.clubName.setText("");
             this.clubDescription.setText("");
-
         }else {
             //Alerting if user has entered invalid values for club details
             Alert clubUpdateAlert = new Alert(Alert.AlertType.WARNING);
@@ -1532,7 +1528,6 @@ public class ClubAdvisorActivityController extends ClubAdvisorDashboardControlll
         // Clear existing items in the table
         table.getItems().clear();
 
-
         // List to store filtered events based on the selected club
         ArrayList<Event> filteredEvents = new ArrayList<>();
 
@@ -1614,7 +1609,6 @@ public class ClubAdvisorActivityController extends ClubAdvisorDashboardControlll
                     // Update the label to indicate that there are no events for generating reports
                     eventDateRange.setText("No Events");
                 }
-
 
             }
         
@@ -1719,7 +1713,6 @@ public class ClubAdvisorActivityController extends ClubAdvisorDashboardControlll
 
     }
 
-
     public void populateAttendanceClubNameComboBox() {
         // the club name combo box is cleared
         attendanceClubNameComboBox.getItems().clear();
@@ -1778,151 +1771,6 @@ public class ClubAdvisorActivityController extends ClubAdvisorDashboardControlll
         }
         // retrieves the current selection in the combo box
         attendanceEventNameComboBox.getSelectionModel().selectFirst();
-    }
-
-    @FXML
-    void selectStudentsForEvents(ActionEvent event) {
-        // an object of data type Event is created and set to null initially
-        Event eventToBeTracked = null;
-        // An array list of data type Student is created
-        ArrayList<Student> studentAttendanceList = new ArrayList<>();
-        // the name of the event is retrieved from the combo box value
-        String eventName = attendanceEventNameComboBox.getValue();
-        System.out.println(eventName);
-        // the string value is set to null
-        String eventRelatedClubName = null;
-        // a for loop is iterated for each entry in the eventDetails Array list
-        for (Event event1 : Event.eventDetails) {
-            // if the event name in the array list is equal to the value in the combo box
-            if (event1.getEventName().equals(eventName)) {
-                eventRelatedClubName = event1.getHostingClub().getClubName();
-                /*the details of that specific entry is assigned to
-                the event variable declared initially at the beginning of the method.*/
-                eventToBeTracked = event1;
-                break; // break statement is used to move out of the loop
-            }
-        }
-
-        if(eventToBeTracked == null){
-            return;
-        }
-
-        // a for loop is iterated for each entry in the studentDetailArray Array list
-        for (Student student : Student.studentDetailArray) {
-            // a for loop is iterated for each entry in the studentJoinedClubs Array list
-            for (Club club : Student.studentJoinedClubs) {
-                /* if the club nam is same as the club  related to the event,
-                the student is added to the respective attendance sheet */
-                if (club.getClubName().equals(eventRelatedClubName)) {
-                    studentAttendanceList.add(student);
-                    break; // a break statement is used to move out of the loop
-                }
-            }
-
-
-            CheckBox attendanceCheckBox = new CheckBox();  // a checkbox is created
-            // an object of data type Attendance is created with the initial attendance status set to false
-            Attendance attendance = new Attendance(false, student, eventToBeTracked, attendanceCheckBox);
-            boolean attendanceStat = true;
-
-            /* for each entry in the eventAttendance Array list, if the student is the same as
-            the student in the sheet, then the loop is exited */
-            for (Attendance attendance1 : eventToBeTracked.eventAttendance){
-                if ((student.getStudentAdmissionNum() == attendance1.student.getStudentAdmissionNum())) {
-                    attendanceStat = false;
-                    break;
-                }// a break statement is used to move out of the loop
-            }
-            
-            // if the boolean value is true
-            if (attendanceStat) {
-                // the object attendance is added to the variable of data type Event
-                eventToBeTracked.eventAttendance.add(attendance);
-            }
-
-        }
-        // for each entry in the Array list
-        for (Attendance attendance2 : eventToBeTracked.eventAttendance) {
-            System.out.println(attendance2.student.getStudentAdmissionNum());
-            System.out.println(attendance2.student.getFirstName());
-            System.out.println(attendance2.getClubName());
-            System.out.println(attendance2.getEventName());
-        }
-        System.out.println(eventToBeTracked.eventAttendance.size());
-        // an observable array list is created to add the details into the table view
-        ObservableList<Attendance> attendanceObservableList = FXCollections.observableArrayList(eventToBeTracked.eventAttendance);
-
-        // the table columns are initialized
-        attendanceClubNameColumn.setCellValueFactory(new PropertyValueFactory<>("clubName"));
-        attendanceEventNameColumn.setCellValueFactory(new PropertyValueFactory<>("eventName"));
-        attendanceStudentNameColumn.setCellValueFactory(new PropertyValueFactory<>("studentName"));
-        attendanceStudentAdmissionNumColumn.setCellValueFactory(new PropertyValueFactory<>("studentAdmissionNum"));
-        attendanceStatusColumn.setCellValueFactory(new PropertyValueFactory<>("attendanceTracker"));
-
-        // the details in the observable array list are set to the table view
-        attendanceTrackerTable.setItems(attendanceObservableList);
-
-    }
-
-
-//    @FXML
-//    void onAttendanceSubmitButtonClick(ActionEvent event) {
-//        Event clearEvent = null;
-////        Event clearEvent = new Event("hyrj", "rtdj","Activity", "Physical", 2023-11-23,5,"srtyjtjt","djtyjm",);
-//        clearEvent.eventAttendance.clear();
-//        ObservableList<Attendance> attendanceTableRetrieval = attendanceTrackerTable.getItems();
-//        clearEvent.eventAttendance.add((Attendance) attendanceTableRetrieval);
-//        System.out.println(clearEvent);
-//        attendanceTableRetrieval.clear();
-//        populateAttendanceClubNameComboBox();
-//        attendanceEventNameComboBox.setValue("Please select");
-//
-//    }
-
-//    @FXML
-//    void onAttendanceSubmitButtonClick(ActionEvent event) {
-//        Attendance attendanceRemove = null;
-//        attendanceTrackerTable.getItems().remove(attendanceRemove);
-//    }
-
-
-
-
-
-
-    public void findMaleFemaleStudentCount(){
-        int maleRate = 0;
-        int femaleRate = 0;
-        for(Student student : Student.studentDetailArray){
-            if(student.getGender() == 'M'){
-                maleRate ++;
-            }else{
-                femaleRate++;
-            }
-        }
-
-        XYChart.Series setOfData = new XYChart.Series();
-        setOfData.getData().add(new XYChart.Data<>("Male", maleRate));
-        setOfData.getData().add(new XYChart.Data<>("Female", femaleRate));
-        GenderRatioChart.getData().addAll(setOfData);
-
-    }
-
-
-    public void displayEnrolledStudentCount(){
-        HashMap<Integer, Integer> studentGrade = new HashMap<>();
-        for(Student student : Student.studentDetailArray){
-            int grade = student.getStudentGrade();
-            studentGrade.put(grade, studentGrade.getOrDefault(grade, 0) + 1);
-        }
-
-        XYChart.Series setOfData = new XYChart.Series();
-        for (Map.Entry<Integer, Integer> entry : studentGrade.entrySet()) {
-            setOfData.getData().add(new XYChart.Data<>(entry.getKey().toString(), entry.getValue()));
-        }
-
-        EnrollStudentCountEachGrade.getData().addAll(setOfData);
-
     }
 
 
@@ -2649,21 +2497,6 @@ public class ClubAdvisorActivityController extends ClubAdvisorDashboardControlll
             return strNumber.substring(0, 10);
         }
     }
-
-    public void populateGenerateReportClubs(ComboBox selectedCombo){
-        selectedCombo.getItems().clear();
-        if(!selectedCombo.getItems().contains("Please Select a Club")){
-            selectedCombo.getItems().add("Please Select a Club");
-        }
-
-        for(Club club: clubDetailsList){
-            selectedCombo.getItems().add(club.getClubName());
-        }
-
-        selectedCombo.getSelectionModel().selectFirst();
-    }
-
-
 
 
     public void populateMembershipCombo(ComboBox<String> selectedCombo) {
