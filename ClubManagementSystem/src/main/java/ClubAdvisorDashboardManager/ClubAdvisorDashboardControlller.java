@@ -705,9 +705,5 @@ abstract public class ClubAdvisorDashboardControlller implements Initializable {
   
     abstract protected void clearUpdateEventFields(ActionEvent event);
 
-    @FXML
-    private Button attendanceSubmitButton;
-
-
 
 }

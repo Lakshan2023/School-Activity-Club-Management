@@ -104,6 +104,8 @@ abstract public class User implements UserValidator {
     abstract public void registerToSystem();
     abstract public String LoginToSystem();
 
+//    abstract public String studentRegisteringToSystem();
+//    abstract public String advisorRegisteringToSystem();
     @Override
     public boolean validateFirstName(){
         if(this.firstName.isEmpty()){
@@ -184,7 +186,6 @@ abstract public class User implements UserValidator {
             if (results.next()) {
                 columnName = results.getString(1);
             }
-
 
             System.out.println(columnName + "data base");
 
