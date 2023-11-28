@@ -44,7 +44,7 @@ public class LoginController implements Initializable {
         stage.setX(event.getScreenX() - xPosition);
         stage.setY(event.getScreenY() - yPosition);
     }
-
+    
     // work done by- Lakshan
     @FXML
     void LoginPanePressed(MouseEvent event) {
