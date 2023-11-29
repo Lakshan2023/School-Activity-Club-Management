@@ -476,6 +476,10 @@ public class ClubAdvisorActivityController extends ClubAdvisorDashboardControlll
                     clubUpdateAlert.setHeaderText("Club details successfully updated!!!");
                     clubUpdateAlert.show();
 
+                    //Disable the update buttons when the user finished updating details
+                    updateClubImageButton.setDisable(true);
+                    updateClubButton.setDisable(true);
+
                     //Clearing the update text-fields
                     this.updateClubID.setText(String.valueOf(""));
                     this.updateClubName.setText("");
@@ -535,6 +539,10 @@ public class ClubAdvisorActivityController extends ClubAdvisorDashboardControlll
             updateClubDetailsTable.scrollTo(foundClub);
             // Update the input fields with the selected item's details for updating
             updateClubTableSelect();
+
+            //Enable the update buttons when the user selects a club to update
+            updateClubImageButton.setDisable(false);
+            updateClubButton.setDisable(false);
         } else {
             // Show alert for non-existent Club Name
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -593,6 +601,10 @@ public class ClubAdvisorActivityController extends ClubAdvisorDashboardControlll
     public void updateClubTableSelect() {
         //Getting the row in the table which user selected
         int row = updateClubDetailsTable.getSelectionModel().getSelectedIndex();
+
+        if(row < 0){
+            return;
+        }
 
         //Setting the details of the user selected club to the update data fields
         String clubID = String.valueOf(clubDetailsList.get(row).getClubId());
@@ -983,6 +995,9 @@ public class ClubAdvisorActivityController extends ClubAdvisorDashboardControlll
     // work done by- Lakshan
     // Method to populate comboBoxes with their club names for scheduling and updating events
     public void getCreatedClubs() {
+        scheduleEventsClubName.getItems().clear();
+        updateEventClubCombo.getItems().clear();
+        viewCreatedEventsSortComboBox.getItems().clear();
         // Check if None is already their in the scheduleEventsClubName ComboBox
         if (!scheduleEventsClubName.getItems().contains("None")) {
             // If not exist add it to scheduleEventsClubName comboBox
@@ -1005,7 +1020,6 @@ public class ClubAdvisorActivityController extends ClubAdvisorDashboardControlll
         for (Club club : Club.clubDetailsList) {
             String clubName;
             clubName = club.getClubName();
-
             // Check if the clubName is already present in each ComboBox
             boolean scheduleContainStatus = scheduleEventsClubName.getItems().contains(clubName);
             boolean updateContainsStatus = updateEventClubCombo.getItems().contains(clubName);
@@ -2607,6 +2621,9 @@ public class ClubAdvisorActivityController extends ClubAdvisorDashboardControlll
                             clubUpdateAlert.setHeaderText("Profile password successfully changed!!!");
                             clubUpdateAlert.show();
 
+                            //Clearing existing password error
+                            profileAdvisorExistingpwError.setText("");
+
                             //Clearing the text fields
                             profileAdvisorExistingpw.setText("");
                             profileAdvisorNewpw.setText("");
@@ -2834,6 +2851,12 @@ public class ClubAdvisorActivityController extends ClubAdvisorDashboardControlll
             observableMembersList.add(tableStudent);
             clubMembershipTable.setItems(observableMembersList);
         }
+        if(observableMembersList == null){
+            //Displaying the number of members
+            membershipReportNumber.setText("Number of Members : " + 0);
+            return;
+        }
+
         //Displaying the number of members
         membershipReportNumber.setText("Number of Members : " + observableMembersList.size());
     }
